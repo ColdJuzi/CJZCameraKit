@@ -18,6 +18,9 @@
 		3B1158DB26CBA4DF00A18D44 /* CJZCameraVideoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B1158D926CBA4DF00A18D44 /* CJZCameraVideoManager.m */; };
 		3B1158DE26CBA4EB00A18D44 /* CJZCameraDeviceSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B1158DC26CBA4EB00A18D44 /* CJZCameraDeviceSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3B1158DF26CBA4EB00A18D44 /* CJZCameraDeviceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B1158DD26CBA4EB00A18D44 /* CJZCameraDeviceSupport.m */; };
+		3B11591826CBB22A00A18D44 /* CJZCameraManagerConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B11591726CBB1D900A18D44 /* CJZCameraManagerConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3B11591926CBB56C00A18D44 /* CJZCameraManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B11591526CBB15600A18D44 /* CJZCameraManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3B11591A26CBB56F00A18D44 /* CJZCameraRecordManagerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B11591626CBB16100A18D44 /* CJZCameraRecordManagerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		3B1158D926CBA4DF00A18D44 /* CJZCameraVideoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJZCameraVideoManager.m; sourceTree = "<group>"; };
 		3B1158DC26CBA4EB00A18D44 /* CJZCameraDeviceSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJZCameraDeviceSupport.h; sourceTree = "<group>"; };
 		3B1158DD26CBA4EB00A18D44 /* CJZCameraDeviceSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CJZCameraDeviceSupport.m; sourceTree = "<group>"; };
+		3B11591526CBB15600A18D44 /* CJZCameraManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJZCameraManagerDelegate.h; sourceTree = "<group>"; };
+		3B11591626CBB16100A18D44 /* CJZCameraRecordManagerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJZCameraRecordManagerDelegate.h; sourceTree = "<group>"; };
+		3B11591726CBB1D900A18D44 /* CJZCameraManagerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CJZCameraManagerConfig.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +83,20 @@
 				3B1158D926CBA4DF00A18D44 /* CJZCameraVideoManager.m */,
 				3B1158DC26CBA4EB00A18D44 /* CJZCameraDeviceSupport.h */,
 				3B1158DD26CBA4EB00A18D44 /* CJZCameraDeviceSupport.m */,
+				3B11591426CBB14E00A18D44 /* Delegate */,
 				3B11589926CB985E00A18D44 /* Info.plist */,
 			);
 			path = CJZCameraKit;
+			sourceTree = "<group>";
+		};
+		3B11591426CBB14E00A18D44 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				3B11591526CBB15600A18D44 /* CJZCameraManagerDelegate.h */,
+				3B11591626CBB16100A18D44 /* CJZCameraRecordManagerDelegate.h */,
+				3B11591726CBB1D900A18D44 /* CJZCameraManagerConfig.h */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,6 +112,9 @@
 				3B1158DE26CBA4EB00A18D44 /* CJZCameraDeviceSupport.h in Headers */,
 				3B1158CE26CBA4AB00A18D44 /* CJZCameraManager.h in Headers */,
 				3B1158D626CBA4D300A18D44 /* CJZCameraRecordPixelManager.h in Headers */,
+				3B11591926CBB56C00A18D44 /* CJZCameraManagerDelegate.h in Headers */,
+				3B11591826CBB22A00A18D44 /* CJZCameraManagerConfig.h in Headers */,
+				3B11591A26CBB56F00A18D44 /* CJZCameraRecordManagerDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
