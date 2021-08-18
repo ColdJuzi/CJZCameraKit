@@ -337,11 +337,27 @@
 }
 
 - (void)zoomWithExpand:(float)expandV {
-    
+    BOOL isSupportZoom = _cameraDevice.activeFormat.videoMaxZoomFactor >= expandV;
+    if (isSupportZoom) {
+        NSError* error;
+        if ([_cameraDevice lockForConfiguration:&error]) {
+            [_cameraDevice rampToVideoZoomFactor:expandV withRate:3.0f];
+            [_cameraDevice unlockForConfiguration];
+        }
+    }
 }
 
 - (void)torchLight:(BOOL)isOpen {
-    
+    AVCaptureTorchMode expectTorchMode = isOpen ? AVCaptureTorchModeOn : AVCaptureTorchModeOff;
+    BOOL isSupportTorch = [_cameraDevice isTorchModeSupported:expectTorchMode];
+    BOOL isDiffState = _cameraDevice.torchMode != expectTorchMode;
+    if (isSupportTorch && isDiffState) {
+        NSError* error;
+        if ([_cameraDevice lockForConfiguration:&error]) {
+            _cameraDevice.torchMode = expectTorchMode;
+            [_cameraDevice unlockForConfiguration];
+        }
+    }
 }
 
 #pragma mark - Record
@@ -353,35 +369,91 @@
 }
 
 - (void)cameraVideoRecordName:(NSString *)nameStr {
-    
+    if (!nameStr || nameStr.length == 0) {
+        return;
+    }
+    _videoFileNameStr = nameStr;
 }
 
 - (void)cameraVideoRecordFPS:(NSUInteger)FPS {
-    
+    if (FPS < 0 || FPS > 33) {
+        _recordFPSCount = 0;
+    }
+    _recordFPSCount = FPS;
 }
 
 - (void)cameraVideoRecordManualInput:(BOOL)isManualInput {
-    
+    _isManualInput = isManualInput;
+    if (_isManualInput) {
+        _recordFPSCount = 0;
+    }
 }
 
 - (void)cameraVideoRecordWithSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                connection:(AVCaptureConnection *)connection {
-    
+    if (_isManualInput) {
+        if (self.recordManager && _isStartRecord && _isPrepareFinish) {
+            if (_isRecordVideo && [_videoConnection isEqual:connection]) {
+                [self appendVideoBufferWithSpecificFPS:sampleBuffer];
+            }
+            if (_isRecordAudio && [_audioConnection isEqual:connection]) {
+                [self appendAudioBuffer:sampleBuffer];
+            }
+        }
+    }
+}
+
+- (void)appendVideoBuffer:(CMSampleBufferRef)sampleBuffer {
+    @synchronized (self) {
+        if (!_isManualInput) {
+            if (self.recordManager && _isStartRecord == YES && _isPrepareFinish == YES) {
+                [self appendVideoBufferWithSpecificFPS:sampleBuffer];
+            }
+        }
+    }
+}
+
+- (void)appendVideoBufferWithSpecificFPS:(CMSampleBufferRef)sampleBuffer {
+    if (_recordFPSCount == 0) {
+        [self.recordManager appendVideoSampleBuffer:sampleBuffer];
+    } else {
+        if (_startRecordTime == 0) {
+            _startRecordTime = (long)([[NSDate date] timeIntervalSince1970] * 1000);
+        }
+        if (([[NSDate date] timeIntervalSince1970] * 1000) - _startRecordTime >= (1000 / _recordFPSCount)) {
+            [self.recordManager appendVideoSampleBuffer:sampleBuffer];
+            _startRecordTime = (long)([[NSDate date] timeIntervalSince1970] * 1000);
+        }
+    }
+}
+
+- (void)appendAudioBuffer:(CMSampleBufferRef)sampleBuffer {
+    @synchronized (self) {
+        if (!_isManualInput) {
+            if (self.recordManager && _isStartRecord == YES && _isPrepareFinish == YES) {
+                [self.recordManager appendAudioSampleBuffer:sampleBuffer];
+            }
+        }
+    }
 }
 
 #pragma mark - CJZCameraManagerDelegate
 
 #pragma mark - CJZCameraRecordManagerDelegate
 - (void)cjzCameraRecord:(CJZCameraRecordManager *)recorder didFailWithError:(NSError *)error {
-    
+    _isPrepareFinish = YES;
 }
 
 - (void)cjzCameraRecordDidFinishPreparing:(CJZCameraRecordManager *)recorder {
-    
+    _isPrepareFinish = NO;
 }
 
 - (void)cjzCameraRecordDidFinishRecording:(CJZCameraRecordManager *)recorder {
-    
+    _isPrepareFinish = NO;
+    if (_delegate && [_delegate respondsToSelector:@selector(cjzCameraRecordFinishWithVideoPath:)]) {
+        [_delegate cjzCameraRecordFinishWithVideoPath:_recordMovieFilePathStr];
+    }
+    recorder = nil;
 }
 
 #pragma mark - Error

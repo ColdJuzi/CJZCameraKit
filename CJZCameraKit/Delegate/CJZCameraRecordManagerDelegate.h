@@ -8,7 +8,7 @@
 #ifndef CJZCameraRecordManagerDelegate_h
 #define CJZCameraRecordManagerDelegate_h
 
-#import <CJZCameraManagerConfig.h>
+#import "CJZCameraManagerConfig.h"
 
 @class CJZCameraRecordManager;
 

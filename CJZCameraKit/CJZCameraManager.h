@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id <CJZCameraManagerDelegate> delegate;
 
+@property (nonatomic, strong, readonly) AVCaptureVideoPreviewLayer* videoPreview;
+
 /**
  初始化照相机管理器
 
