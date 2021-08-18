@@ -460,7 +460,7 @@
 - (void)cameraError:(CJZCameraManagerErrorType)errorType {
     if (_delegate && [_delegate respondsToSelector:@selector(cjzCameraCaptureOutput:error:)]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_delegate cjzCameraCaptureOutput:nil error:errorType];
+            [self->_delegate cjzCameraCaptureOutput:nil error:errorType];
         });
     }
 }

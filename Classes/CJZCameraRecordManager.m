@@ -124,13 +124,13 @@
                                                      fileType:AVFileTypeQuickTimeMovie
                                                         error:&error];
 
-            if (!error && _videoTrackSourceFormatDescription) {
-                [weakSelf setupAssetWriterVideoInputWithSourceFormatDescription:_videoTrackSourceFormatDescription
-                                                                      transform:_videoTrackTransform
+            if (!error && self->_videoTrackSourceFormatDescription) {
+                [weakSelf setupAssetWriterVideoInputWithSourceFormatDescription:self->_videoTrackSourceFormatDescription
+                                                                      transform:self->_videoTrackTransform
                                                                           error:&error];
             }
-            if (!error && _audioTrackSourceFormatDescription) {
-                [weakSelf setupAssetWriterAudioInputWithSourceFormatDescription:_audioTrackSourceFormatDescription
+            if (!error && self->_audioTrackSourceFormatDescription) {
+                [weakSelf setupAssetWriterAudioInputWithSourceFormatDescription:self->_audioTrackSourceFormatDescription
                                                                           error:&error];
             }
             if (!error) {
@@ -178,7 +178,7 @@
                         break;
                     case CJZCameraManagerRecordStatusFinished: {
                         [self teardownAssetWriterAndInputs];
-                        _status = CJZCameraManagerRecordStatusIdle;
+                        self->_status = CJZCameraManagerRecordStatusIdle;
                         [self.delegate cjzCameraRecordDidFinishRecording:self];
                     }
                         break;
@@ -302,9 +302,9 @@
                     return;
                 }
             }
-            if (!_haveStartedSession) {
+            if (!self->_haveStartedSession) {
                 [weakSelf.assetWriter startSessionAtSourceTime:CMSampleBufferGetPresentationTimeStamp(sampleBuffer)];
-                _haveStartedSession = YES;
+                self->_haveStartedSession = YES;
             }
 
             AVAssetWriterInput* input = (mediaType == AVMediaTypeVideo) ? weakSelf.videoInput : weakSelf.audioInput;
